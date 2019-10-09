@@ -1,4 +1,4 @@
-# Design<sup>STEM</sup>
+## Old demos
 
 ### [Sorted circles](./sortedcircles)
 
