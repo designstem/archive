@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/lodash"></script>
+    <script src="https://unpkg.com/d3"></script>
+    <style>
+    
+    body {
+        font-family: sans-serif;
+        font-size: 0.9em;
+        padding: 2em;
+        margin: 0;
+    }
+    .menu {
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        opacity: 0.5;
+        margin-bottom: 2em;
+    }
+    .menu > * {
+        margin-right: 1rem;
+    }
+    .menu > * > * {
+        margin-right: 0.5rem;
+        cursor: pointer;
+    }
+    .circles-move,
+    .text-move {
+        transition: transform 1.3s;
+    }
+    .text-enter-active, .text-leave-active {
+        transition: all 1s
+    }
+    .text-enter, .text-leave-active {
+        transform: translate(30px);
+        opacity: 0
+    }
+
+  </style>
+</head>
+<body>
+    
+    <div id="app">
+
+        <div class="menu">
+
+            <div v-for="key in orderKeys" @click.prevent="currentOrderKey = key">
+                Sort by {{key[0]}}
+            </div> 
+          <div v-for="size in groupSizes" @click.prevent="currentGroupSize = size">
+            Group of {{size}}
+          </div>
+       
+        </div>
+
+        <svg width="1200" height="1200">
+            <transition-group name="circles" tag="g">
+                <circle
+                    v-for="(circle, index) in orderedCircles"
+                    :key="circle.id"
+                    :cx="index % currentGroupSize * 40 + 20"
+                    :cy="Math.floor(index / currentGroupSize) * 40 + 20"
+                    :r="circle.complexity"
+                    :fill="colorValue(circle.countryId)"
+                />
+            </transition-group>
+            <transition-group name="circles" tag="g">
+                <text
+                    v-for="(circle, index) in orderedCircles"
+                    :key="circle.id"
+                    :x="index % currentGroupSize * 40 + 20"
+                    :y="Math.floor(index / currentGroupSize) * 40 + 20"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    fill="white"
+                    font-size="10px"
+                    opacity="0.5"
+                >{{countries[circle.countryId]}}</text>
+            </transition-group>
+            <transition-group name="text" tag="g">
+                <text
+                    v-if="currentGroupSize == 1"
+                    v-for="(circle, index) in orderedCircles"
+                    :key="circle.id"
+                    :x="50"
+                    :y="Math.floor(index / currentGroupSize) * 40 + 20"
+                    dominant-baseline="central"
+                    opacity="0.5"
+                >{{circle.title}}</text>
+            </transition-group>
+        </svg>
+
+    </div>
+
+    <script src="./index.js"></script>
+
+</body>
+</html>
