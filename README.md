@@ -4,6 +4,4 @@
 
 ### [Templates](./templates)
 
-### [Editor](./editor)
-
 ### [Progress tracker](./homepage)
